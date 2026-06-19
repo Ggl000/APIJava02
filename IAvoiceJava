@@ -1,0 +1,27 @@
+Public class OrcamentoController 
+
+
+    private final TransacaoService transacaoService;
+    private final SpeechService speechService;
+    private final IaService iaService; }
+
+   public OrcamentoController(TransacaoService transacaoService, SpeechService speechService, IaService iaService) {
+        this.transacaoService = transacaoService;
+        this.speechService = speechService;
+        this.iaService = iaService;
+  
+
+    //processar o áudio 
+    {public ResponseEntity<String> processarAudio(@RequestParam("file") MultipartFile file) {
+        // 1. Converter o áudio para texto
+        String texto = speechService.converterAudioParaTexto(file);
+
+        // 2. Interpretar a intenção
+        String comando = iaService.interpretarComando(texto);
+
+        // 3. Executar a ação 
+        String resposta = transacaoService.executarComando(comando);
+
+        // 4. Retornar a resposta final 
+        return ResponseEntity.ok(resposta);
+    }
